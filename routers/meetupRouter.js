@@ -32,16 +32,16 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     try {
-        await meetupController.updateRepo(req, res);
+        await meetupController.updateMeetup(req, res);
     } catch (error) {
-        console.error('Error in getAllMeetup router:', error);
+        console.error('Error in updateMeetup router:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 
 router.delete('/:id', async (req, res) => {
     try {
-        await meetupController.deleteRepo(req, res);
+        await meetupController.deleteMeetup(req, res);
     } catch (error) {
         console.error('Error in getAllMeetup router:', error);
         res.status(500).json({ error: 'Internal Server Error' });

@@ -61,49 +61,56 @@ class meetupController {
     }
 
 
-    async updateRepo(req, res) {
+    async updateMeetup(req, res) {
         try {
-            const meetup = await Meetup.findOne({
-                where: { meetup_id: req.params.id, }
-            });
-            const meetupWithSameTitle = await Meetup.findOne({
-                where: { title: req.body.name }
-            });
+            console.log('Request Params ID:', req.params.id);
+            console.log('Request Body:', req.body);
 
-            if (meetupWithSameTitle && meetupWithSameTitle.id != req.params.id)
-                return res.status(409).send('[ERROR] 409: You already have a repo with such name.');
+            const meetup = await Meetup.findOne({
+                where: { meetup_id: req.params.id }
+            });
+            console.log('Meetup found:', meetup);
+
+            const meetupWithSameTitle = await Meetup.findOne({
+                where: { title: req.body.title }
+            });
+            console.log('Meetup with same title:', meetupWithSameTitle);
+
+            if (meetupWithSameTitle && meetupWithSameTitle.meetup_id != req.params.id) {
+                return res.status(409).send('[ERROR] 409: You already have a meetup with such name.');
+            }
+
             if (meetup) {
                 await Meetup.update(
-                    {   
+                    {
                         title: req.body.title,
                         description: req.body.description,
                         tags: req.body.tags,
                         event_time: req.body.event_time,
-                        location: req.body.location, 
+                        location: req.body.location,
                     },
                     {
-                        where: { meetup_id: req.params.id, }
+                        where: { meetup_id: req.params.id }
                     }
                 );
 
-                const meetupUpdated = await Meetup.findOne(
-                    { where: 
-                        { 
-                            meetup_id: +req.params.id 
-                        }});
-                console.log(meetupUpdated);
-                console.log(+req.params.id);
+                const meetupUpdated = await Meetup.findOne({
+                    where: { meetup_id: req.params.id }
+                });
+                console.log('Meetup updated:', meetupUpdated);
+
                 return res.status(200).end(JSON.stringify(meetupUpdated, null, 4));
-            } else
-                res.status(404).send('[ERROR] 404: Repo is not found.');
+            } else {
+                return res.status(404).send('[ERROR] 404: Meetup not found.');
+            }
         } catch (err) {
-            console.log(err);
-            res.status(403).send('[ERROR]');
+            console.error('Error during updateMeetup:', err);
+            res.status(403).send('[ERROR]' + err);
         }
     }
 
 
-    async deleteRepo(req, res) {
+    async deleteMeetup(req, res) {
         try {
             const meetup = await Meetup.findOne({
                 where: {
