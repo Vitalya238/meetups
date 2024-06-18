@@ -1,6 +1,11 @@
-const app = require("express")();
+const express = require('express');
+const app = express();
+const meetupRouter = require('./routers/meetupRouter');
+
+app.use('/meetups', meetupRouter);
+
 const PORT = process.env.PORT || 3000;
 
-app.use("/", require("./routers/meetupRouter"));
-
-app.listen(PORT, () => console.log(`Server listening on ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
