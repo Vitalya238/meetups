@@ -11,4 +11,41 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/:id', async (req, res) => {
+    try {
+        await meetupController.getOneMeetup(req, res);
+    } catch (error) {
+        console.error('Error in getOneMeetup router:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
+router.post('/', async (req, res) => {
+    try {
+        await meetupController.createMeetup(req, res);
+    } catch (error) {
+        console.error('Error in getAllMeetup router:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.put('/:id', async (req, res) => {
+    try {
+        await meetupController.updateRepo(req, res);
+    } catch (error) {
+        console.error('Error in getAllMeetup router:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.delete('/:id', async (req, res) => {
+    try {
+        await meetupController.deleteRepo(req, res);
+    } catch (error) {
+        console.error('Error in getAllMeetup router:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 module.exports = router;
